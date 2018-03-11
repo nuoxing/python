@@ -7,7 +7,9 @@ class CSVPipeline(object):
     self.csvwriter.writerow(['title'])
 
   def process_item(self, item, ampa):
-    print(item['title'])
-    self.csvwriter.writerow(['fdfhdfudfhdi'])
+    list1 = [];
+    list1.append(item['title'])
+    print(list1)
+    self.csvwriter.writerow(list1)
 
     return item
