@@ -1,5 +1,8 @@
 import scrapy
-
+import re
+"""
+爬虫类 负责到互联网下载数据 分析数据 然后输出到pipeline中 在pipeline再做数据保持的处理
+"""
 class DogSpider(scrapy.Spider):
     name = "dog"
 
@@ -43,10 +46,25 @@ class DogSpider(scrapy.Spider):
         return val
 
 
+    #完整的宠物狗介绍信息
     def getCompleteInfo(self,sel):
         val = []
         for s in sel:
-            print(s)
-            resstr = s.xpath('span/span/text()').extract()
+           # print(s)
+            resstr = s.xpath('.//span[contains(@style,"yes")]/text()').extract()
+            if len(resstr)==0:
+                print("resstr为0")
+                resstr = s.xpath('.//span[contains(@style,"yes")]/strong/text()').extract()
+                pass
+            #再次获取不到数据信息
+            if len(resstr)==0:
+                print("再次获取不到数据")
+                resstr = s.xpath('span/span/span/text()').extract()
             print(resstr)
+            #对数据进行处理 正则替换数据
+            if len(resstr)>0:
+               print("进入")
+               tempstr = re.sub('xa0',"",str(resstr[0]))
+               val.append(tempstr)
+        print("结果=",val)
 
