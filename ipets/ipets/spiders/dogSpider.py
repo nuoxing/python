@@ -27,10 +27,26 @@ class DogSpider(scrapy.Spider):
 
 
 
+    #详细信息界面
     def parse_doginfo(self,response):
-        #print(response.body)
-        name = response.xpath('//div[@class="pet_nav_top"]/h2/text()').extract()
-        plist = response.xpath('//div[@class="Details_content"]/div[@class="option_box"]/pre/p')
-        introduce = plist[0].xpath('span/span/text()').extract()
+        valist = self.getBaseInfo(response.xpath('//div[@class="Details_main"]/ul'))
+        self.getCompleteInfo(response.xpath('//div[@class="Details_content"]/div[@class="option_box"]/pre/p'))
+        pass
 
+
+
+
+    #狗的基本信息介绍
+    def getBaseInfo(self,sel):
+        for s in sel:
+            val = s.xpath('li/text()').extract()
+        return val
+
+
+    def getCompleteInfo(self,sel):
+        val = []
+        for s in sel:
+            print(s)
+            resstr = s.xpath('span/span/text()').extract()
+            print(resstr)
 
