@@ -64,7 +64,7 @@ class DogSpider(scrapy.Spider):
             #对数据进行处理 正则替换数据
             if len(resstr)>0:
                print("进入")
-               tempstr = re.sub('xa0',"",str(resstr[0]))
+               tempstr = re.sub(r'\\xa0',"",str(resstr[0]))
                val.append(tempstr)
         print("结果=",val)
 
