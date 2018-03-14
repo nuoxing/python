@@ -25,6 +25,7 @@ class DogSpider(scrapy.Spider):
             yield response.follow(href[0], callback=self.parse_dogattributeint)
 
     def parse_dogattributeint(self,response):
+        #xpath返回的selector的list
         href = response.xpath('//div[@id="car_tag"]/ul/li/a/@href').extract()
         #print(href)
         yield response.follow(href[1], callback=self.parse_doginfo)
@@ -46,17 +47,27 @@ class DogSpider(scrapy.Spider):
 
     #狗的基本信息介绍
     def getBaseInfo(self,sel):
+        vallist = []
         for s in sel:
-            val = s.xpath('li/text()').re(r'[\u4e00-\u9fa5_a-zA-Z0-9\.,，。：、]+')
-        return val
+            #re返回的从selector list中获取的文本 list
+            val = s.xpath('li/text()').re(r'[\u4e00-\u9fa5_a-zA-Z0-9\.,，。：、\s\-—；;\;“”"\(\)（）~\%]+')
+            for slist in val:
+                tempstr = re.sub(r'\s','',slist)
+                vallist.append(tempstr)
+        return vallist
 
 
     #完整的宠物狗介绍信息
     def getCompleteInfo(self,sel):
         val = []
         for s in sel:
-            tempres = s.xpath('.//span//text()').re(r'[\u4e00-\u9fa5_a-zA-Z0-9\.,，。：、]+')
+            tempres = s.xpath('.//span//text()').re(r'[\u4e00-\u9fa5_a-zA-Z0-9\.,，。：、\s\-—；;\;“”"\(\)（）~\%]+')#获取span下的文本
+            for tempval in tempres:
+                ss = re.sub(r'\s','',tempval)#去掉空格 &nbsp等等
+                print('ss=',ss)
+                if ss is not '':
+                    print('加入')
+                    val.append(ss)
             print(tempres)
-            val.extend(tempres)
         return val
 

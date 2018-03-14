@@ -1,6 +1,8 @@
 import csv
 import itertools
-
+"""
+把爬取的数据保存到cvs
+"""
 class CSVPipeline(object):
   def __init__(self):
     self.csvwriter = csv.writer(open('E:/items.csv', 'a', encoding='gbk',newline=''), dialect='excel')

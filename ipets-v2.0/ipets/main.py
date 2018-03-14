@@ -5,5 +5,5 @@ import re
 """
 
 cmdline.execute("scrapy crawl dog".split())
-s = re.sub(r'\\xa0',"","fdffdfd\\xa0")
+s = re.sub(r'\s',"","fdffdfd  a0")
 print(s)
