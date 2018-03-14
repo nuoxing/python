@@ -35,7 +35,7 @@ class DogSpider(scrapy.Spider):
     #详细信息界面
     def parse_doginfo(self,response):
         valist = self.getBaseInfo(response.xpath('//div[@class="Details_main"]/ul'))
-        valist2 = self.getCompleteInfo(response.xpath('//div[@class="Details_content"]/div[@class="option_box"]/pre/p'))
+        valist2 = self.getCompleteInfo(response.xpath('//div[@class="Details_content"]/div[@class="option_box"]/pre'))
         valist.extend(valist2)
         item = IpetsItem()
         item['reslist'] = valist
@@ -50,7 +50,8 @@ class DogSpider(scrapy.Spider):
         vallist = []
         for s in sel:
             #re返回的从selector list中获取的文本 list
-            val = s.xpath('li/text()').re(r'[\u4e00-\u9fa5_a-zA-Z0-9\.,，。：、\s\-—；;\;“”"\(\)（）~\%]+')
+            #val = s.xpath('li/text()').re(r'[\u4e00-\u9fa5_a-zA-Z0-9\.,，。：、\s\-—\－；;\;“”"\(\)（）~\%\[\]【】]+')
+            val = s.xpath('li/text()').extract()
             for slist in val:
                 tempstr = re.sub(r'\s','',slist)
                 vallist.append(tempstr)
@@ -61,7 +62,8 @@ class DogSpider(scrapy.Spider):
     def getCompleteInfo(self,sel):
         val = []
         for s in sel:
-            tempres = s.xpath('.//span//text()').re(r'[\u4e00-\u9fa5_a-zA-Z0-9\.,，。：、\s\-—；;\;“”"\(\)（）~\%]+')#获取span下的文本
+            #tempres = s.xpath('.//span//text()').re(r'[\u4e00-\u9fa5_a-zA-Z0-9\.,，。：、\s\-—\－；;\;“”"\(\)（）~\%\[\]【】\\/]+')#获取span下的文本
+            tempres = s.xpath('.//p//text()').extract()
             for tempval in tempres:
                 ss = re.sub(r'\s','',tempval)#去掉空格 &nbsp等等
                 print('ss=',ss)
