@@ -89,8 +89,11 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-#取消默认的useragent,使用新的useragent
+#取消默认的useragent,使用新的useragent，下载器中间件
 DOWNLOADER_MIDDLEWARES = {
         'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware' : None,
         'ipets.spiders.rotate_useragent.RotateUserAgentMiddleware' :400
+      #  'ipets.PhantomJSMiddleware.PhantomJSMiddleware':543#键为中间件类的路径，值为中间件的顺序
     }
+
+

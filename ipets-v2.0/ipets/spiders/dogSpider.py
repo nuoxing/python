@@ -16,7 +16,7 @@ class DogSpider(scrapy.Spider):
        # print(response.body)
         divlist = response.xpath('//div[@class="jieshao"]')
         for res in divlist:
-            #print(res)
+            print(res)
             #提取href值
             href = res.xpath('dl/dt/a/@href').extract()
            # print(href)
